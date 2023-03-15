@@ -40,10 +40,18 @@ public partial class MainWindow : Window
         {
             do
             {
-                var result = await client.ReceiveAsync();
-                buffer = result.Buffer;
-                len = buffer.Length;
-                list.AddRange(buffer);
+                try
+                {
+                    var result = await client.ReceiveAsync();
+                    buffer = result.Buffer;
+                    len = buffer.Length;
+                    list.AddRange(buffer);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
             } while (len == maxlen);
             var image = LoadImage(list.ToArray());
             if (image != null)
